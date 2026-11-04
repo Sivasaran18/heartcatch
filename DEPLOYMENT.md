@@ -53,3 +53,4 @@ git push -u origin main
    - Create a room on Device 1.
    - Join with the generated 5-letter code on Device 2.
    - Start match and confirm live real-time heart catching and scoreboard synchronization.
+
