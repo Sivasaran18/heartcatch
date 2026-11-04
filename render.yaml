@@ -1,0 +1,43 @@
+services:
+  # -----------------------------------------------------------
+  # 1. Authoritative Real-Time Go Game Server (WebSockets + REST)
+  # -----------------------------------------------------------
+  - type: web
+    name: heysakhi-catchhearts-backend
+    runtime: go
+    plan: free
+    rootDir: server
+    buildCommand: go build -o catchhearts-server .
+    startCommand: ./catchhearts-server
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 10000
+
+  # -----------------------------------------------------------
+  # 2. React + TypeScript Mobile-First Web Client
+  # -----------------------------------------------------------
+  - type: web
+    name: heysakhi-catchhearts-frontend
+    runtime: static
+    plan: free
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_BACKEND_HTTP
+        fromService:
+          type: web
+          name: heysakhi-catchhearts-backend
+          property: host
+        transform: https
+      - key: VITE_BACKEND_WS
+        fromService:
+          type: web
+          name: heysakhi-catchhearts-backend
+          property: host
+        transform: wss
