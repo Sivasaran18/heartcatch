@@ -31,6 +31,7 @@ export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
+  const basketXRef = useRef<number>(50);
   const lastSentBasketX = useRef<number>(50);
   const lastSendTime = useRef<number>(0);
 
@@ -276,10 +277,12 @@ export const App: React.FC = () => {
   };
 
   // Move basket (throttled to ~30-40 updates/sec to prevent network flooding)
+  // Local basket renders via PlayfieldCanvas internal ref at 60 FPS without re-rendering App
   const handleBasketMove = (x: number) => {
-    setBasketX(x);
+    // Keep basketXRef updated without re-rendering App on every pointer move
+    basketXRef.current = x;
     const now = performance.now();
-    if (now - lastSendTime.current > 25 && Math.abs(x - lastSentBasketX.current) > 0.5) {
+    if (now - lastSendTime.current > 25 && Math.abs(x - lastSentBasketX.current) > 0.4) {
       lastSendTime.current = now;
       lastSentBasketX.current = x;
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {

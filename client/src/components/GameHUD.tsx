@@ -23,59 +23,61 @@ export const GameHUD: React.FC<GameHUDProps> = ({
   turnNumber,
 }) => {
   return (
-    <div className="w-full px-3 py-2 bg-slate-900/80 backdrop-blur-md border-b border-rose-500/30 flex flex-col gap-1 z-20">
+    <div className="w-full px-2.5 sm:px-4 py-1.5 sm:py-2 bg-slate-900/90 backdrop-blur-md border-b border-rose-500/30 flex flex-col gap-1 z-20 shrink-0 select-none">
       {/* Top Banner: Turn info and dynamic name hint */}
-      <div className="flex items-center justify-between text-xs font-medium">
-        <div className="flex items-center gap-1.5 text-rose-300">
-          <span className="px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-[10px] uppercase tracking-wider">
-            Turn {turnNumber} / 2
+      <div className="flex flex-wrap items-center justify-between gap-1 text-[11px] sm:text-xs font-medium">
+        <div className="flex items-center gap-1 sm:gap-1.5 text-rose-300">
+          <span className="px-1.5 sm:px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-[9px] sm:text-[10px] uppercase tracking-wider font-bold">
+            Turn {turnNumber}/2
           </span>
-          <span className="text-white font-semibold">{activePlayerName}</span>
-          <span className="text-slate-400">is playing</span>
+          <span className="text-white font-semibold truncate max-w-[100px] sm:max-w-[160px]">{activePlayerName}</span>
+          <span className="text-slate-400 hidden xs:inline text-[10px] sm:text-xs">playing</span>
         </div>
 
         {/* Dynamic Name Explanation pill */}
-        <div className="flex items-center gap-1 text-[11px] px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-200">
-          <Sparkles className="w-3 h-3 text-amber-400" />
-          <span>Hearts show: <strong className="text-white underline">{opponentName}</strong></span>
+        <div className="flex items-center gap-1 text-[10px] sm:text-[11px] px-1.5 sm:px-2 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-200">
+          <Sparkles className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-amber-400 shrink-0" />
+          <span className="truncate max-w-[150px] sm:max-w-none">
+            Hearts: <strong className="text-white underline font-semibold">{opponentName}</strong>
+          </span>
         </div>
       </div>
 
       {/* Main Stats Row */}
-      <div className="flex items-center justify-between mt-1">
+      <div className="flex items-center justify-between mt-0.5 sm:mt-1 gap-2">
         {/* Score & Combo */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex flex-col">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold">Score</span>
-            <span className="text-2xl font-black text-rose-400 tracking-tight leading-none">
+            <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-semibold">Score</span>
+            <span className="text-xl sm:text-2xl font-black text-rose-400 tracking-tight leading-none">
               {score}
             </span>
           </div>
 
           {combo >= 3 && (
-            <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-orange-500/20 border border-orange-500/40 text-orange-300 animate-pulse">
-              <Flame className="w-4 h-4 text-orange-400 fill-orange-400" />
-              <span className="text-xs font-extrabold">{combo}x Streak!</span>
+            <div className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-lg bg-orange-500/20 border border-orange-500/40 text-orange-300 animate-pulse">
+              <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400 shrink-0" />
+              <span className="text-[10px] sm:text-xs font-extrabold">{combo}x</span>
             </div>
           )}
         </div>
 
         {/* Timer */}
-        <div className="flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800/90 border border-slate-700">
-          <Clock className={`w-4 h-4 ${timeLeft <= 10 ? 'text-rose-500 animate-spin' : 'text-slate-300'}`} />
-          <span className={`text-xl font-mono font-bold ${timeLeft <= 10 ? 'text-rose-400' : 'text-white'}`}>
+        <div className="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-slate-800/90 border border-slate-700">
+          <Clock className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${timeLeft <= 10 ? 'text-rose-500 animate-spin' : 'text-slate-300'}`} />
+          <span className={`text-base sm:text-xl font-mono font-bold ${timeLeft <= 10 ? 'text-rose-400' : 'text-white'}`}>
             {Math.ceil(timeLeft)}s
           </span>
         </div>
 
         {/* Lives Indicator */}
         <div className="flex flex-col items-end">
-          <span className="text-[10px] text-slate-400 uppercase font-semibold mb-0.5">Lives</span>
-          <div className="flex items-center gap-1">
+          <span className="text-[9px] sm:text-[10px] text-slate-400 uppercase font-semibold mb-0.5">Lives</span>
+          <div className="flex items-center gap-0.5 sm:gap-1">
             {[1, 2, 3].map((heartIndex) => (
               <Heart
                 key={heartIndex}
-                className={`w-5 h-5 transition-all duration-300 ${
+                className={`w-4 h-4 sm:w-5 sm:h-5 transition-all duration-300 ${
                   heartIndex <= lives
                     ? 'text-rose-500 fill-rose-500 filter drop-shadow-[0_0_6px_rgba(244,63,94,0.8)] scale-100'
                     : 'text-slate-700 fill-slate-800 scale-90 opacity-40'
@@ -87,15 +89,15 @@ export const GameHUD: React.FC<GameHUDProps> = ({
       </div>
 
       {/* Role Notice: Active player vs Observer */}
-      <div className="text-center text-[11px] py-0.5">
+      <div className="text-center text-[10px] sm:text-[11px] py-0.5 truncate">
         {isActiveTurn ? (
           <span className="text-emerald-400 font-medium">
-            🎯 Drag or touch to move your basket & catch hearts! Dodge bombs!
+            🎯 Drag anywhere to move basket! Catch hearts, dodge bombs!
           </span>
         ) : (
-          <span className="text-sky-300 font-medium flex items-center justify-center gap-1">
-            <ShieldAlert className="w-3 h-3" />
-            Observing live — {activePlayerName}'s turn to catch {opponentName}'s hearts!
+          <span className="text-sky-300 font-medium inline-flex items-center justify-center gap-1 truncate">
+            <ShieldAlert className="w-3 h-3 shrink-0" />
+            Live Turn: {activePlayerName} catching {opponentName}'s hearts!
           </span>
         )}
       </div>
